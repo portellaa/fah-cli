@@ -1,6 +1,8 @@
 #!/usr/bin/expect
 #!/bin/bash
 
+log_user 0
+
 # Arguments passed to the script
 set argscount [llength $argv]
 
@@ -12,7 +14,18 @@ if {$argscount == 0} {
 
 set timeout 5
 set host "localhost"
-set port "36331"
+set port "36330"
+
+proc buildArgs {} {
+
+	set $final_arg [lindex $argv 0]
+
+	for {set i 1} {$i < $argscount} {incr i 1} {
+		set $final_arg [$final_arg + " " + [lindex $argv $i]]
+	}
+
+	return $final_args
+}
 
 spawn telnet $host $port
 expect {
@@ -22,9 +35,20 @@ expect {
 	}
 	# Successfull login
 	"> " {
-		send "unpause\r"
-		expect "> " {
-			send "exit\r"
+		send -- "[lindex $argv 0]\r"
+		expect {
+			"> " {
+				send -- "exit\r"
+				expect {
+					eq "Connection closed by foreign host." {
+						exit 0
+					}
+					timeout {
+						exit 0
+					}
+				}
+				exit 0
+			}
 		}
 	}
 	# EOF error
@@ -36,5 +60,3 @@ expect {
 		send_error "$test_name: timeout"
 	}
 }
-
-
