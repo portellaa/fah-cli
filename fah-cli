@@ -13,7 +13,10 @@ if {$argscount == 0} {
 }
 
 set timeout 5
+
+# Sets the address of the machine running the client. Change this value if you want to connect remotely.
 set host "localhost"
+# Sets the port where the client its listening. Change this value if you have changed the default port.
 set port "36330"
 
 proc buildArgs {} {

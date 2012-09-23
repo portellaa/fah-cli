@@ -10,6 +10,12 @@ With that i feel the need of create a script to easily execute commands in all t
 
 You can use too FAHControl with remote administration enable, but the passwords are send in plain text. With this script you can logon remotely on the machine with SSH, and access all the client control features without use X over SSH.
 
+Configuration
+=======
+
+The script do not allows that the host and port are send by arguments so, if you have changed the port where the client its listen and wants to connect remotely you need to modify the host and port values on the script.
+Use your favorite to do that, or other method that you prefer. ;)
+
 USAGE
 =======
 
