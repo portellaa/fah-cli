@@ -18,17 +18,16 @@ spawn telnet $host $port
 expect {
 	# Provided host and port incorrect
 	"telnet: Unable to connect to remote host" {
-		puts stderr "[exec tput sgr 0 1][exec tput setaf 1]Error:[exec tput sgr0] [exec tput setaf 3]The provided host|port are not valid. Provided values: Host: $host  |  Port: $port.[exec tput sgr0]"
+		puts "[exec tput sgr 0 1][exec tput setaf 1]Error:[exec tput sgr0] [exec tput setaf 3]The provided host|port are not valid. Provided values: Host: $host  |  Port: $port.[exec tput sgr0]"
 	}
 	# Successfull login
 	"> " {
 		send "unpause\r"
 		expect "> " {
-				send "exit\r"
-			}
+			send "exit\r"
 		}
 	}
-	# EOF.
+	# EOF error
 	eof {
 		send_error "Error: Connection to $host:$port aborted.\n"
 	}
@@ -37,3 +36,5 @@ expect {
 		send_error "$test_name: timeout"
 	}
 }
+
+
