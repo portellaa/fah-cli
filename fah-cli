@@ -1,8 +1,16 @@
 #!/usr/bin/expect
 #!/bin/bash
 
-set timeout 5
+# Arguments passed to the script
+set argscount [llength $argv]
 
+if {$argscount == 0} {
+	puts "[exec tput sgr 0 1][exec tput setaf 3]Usage:[exec tput sgr0] [exec tput bold]fah-cli \[arguments\][exec tput sgr0]"
+	puts "[exec tput sgr0 1][exec tput setaf 2]Example:[exec tput sgr0] [exec tput bold]fah-cli pause -- to pause the folding process.[exec tput sgr0]"
+	exit 1
+}
+
+set timeout 5
 set host "localhost"
 set port "36331"
 
@@ -10,13 +18,12 @@ spawn telnet $host $port
 expect {
 	# Provided host and port incorrect
 	"telnet: Unable to connect to remote host" {
-		puts "[exec tput sgr 0 1][exec tput setaf 1]Error:[exec tput sgr0] [exec tput setaf 3]The provided host|port are not valid. Provided values: Host: $host  |  Port: $port.[exec tput sgr0]"
+		puts stderr "[exec tput sgr 0 1][exec tput setaf 1]Error:[exec tput sgr0] [exec tput setaf 3]The provided host|port are not valid. Provided values: Host: $host  |  Port: $port.[exec tput sgr0]"
 	}
-	# Sucefull login
+	# Successfull login
 	"> " {
 		send "unpause\r"
-		expect {
-			"> " {
+		expect "> " {
 				send "exit\r"
 			}
 		}
