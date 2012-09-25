@@ -1,7 +1,9 @@
 #!/usr/bin/expect
 #!/bin/bash
 
-log_user 0
+#log_user 0
+
+#debug -now 1
 
 # Arguments passed to the script
 set argscount [llength $argv]
@@ -40,7 +42,11 @@ expect {
 	"> " {
 		send -- "[lindex $argv 0]\r"
 		expect {
+			-regexp "ERROR: unknown command or variable '*'" {
+				puts "[exec tput sgr 0 1][exec tput setaf 1]Error:[exec tput sgr0] [exec tput setaf 3]Command invalid.[exec tput sgr0]"
+			}
 			"> " {
+#				puts $expect_out(buffer)
 				send -- "exit\r"
 				expect {
 					eq "Connection closed by foreign host." {
