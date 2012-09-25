@@ -1,7 +1,7 @@
 #!/usr/bin/expect
 #!/bin/bash
 
-#log_user 0
+log_user 0
 
 #debug -now 1
 
